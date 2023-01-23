@@ -15,16 +15,16 @@ class ModeloCliente() {
 
     }
 
-    fun insertCliente(cliente: Cliente){
+    fun insertCliente(cliente: Cliente) : Boolean{
 
         try {
             manager.transaction.begin()
             manager.persist(cliente)
             manager.transaction.commit()
+            return true
         } catch (e: Exception) {
             manager.transaction.rollback()
-            println("Se ha producido un error, rollback aplicado")
-
+            return false
         }
     }
 

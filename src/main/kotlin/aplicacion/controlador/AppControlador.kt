@@ -4,40 +4,47 @@ import Clases.Cliente
 import Clases.Taller
 import Modelo.ModeloCliente
 import Modelo.ModeloTaller
+import aplicacion.vista.AppVista
 
 class AppControlador {
 
     private val gestorClientes = ModeloCliente()
     private val gestorTalleres = ModeloTaller()
 
+    private val vista = AppVista()
+
     fun allClientes(){
         val lisclientes = gestorClientes.getAllClientes()
 
         for(cliente in lisclientes){
-            println("********************")
-            println("Nombre : ${cliente.nombre}")
-            println("DNI : ${cliente.dni}")
-            println("Dirección : ${cliente.direccion}")
+            vista.imprimirCliente(cliente)
         }
     }
 
     fun insertCliente(cliente: Cliente){
-        gestorClientes.insertCliente(cliente)
+        val insert = gestorClientes.insertCliente(cliente)
+        if (insert){
+            vista.insercionCLienteCorrecta()
+        }else{
+            vista.insercionClienteFallida()
+        }
     }
 
     fun allTalleres(){
         val lisTalleres = gestorTalleres.getAllTalleres()
 
         for (taller in lisTalleres){
-            println("********************")
-            println("Nombre : ${taller.nombre}")
-            println("DNI : ${taller.cif}")
-            println("Dirección : ${taller.direccion}")
+            vista.imprimirTaller(taller)
         }
     }
 
     fun insertTaller(taller: Taller){
-        gestorTalleres.insertTaller(taller)
+        val insert = gestorTalleres.insertTaller(taller)
+        if (insert){
+            vista.insercionTallerCorrecta()
+        }else{
+            vista.insercionTallerFallida()
+        }
     }
 
 }

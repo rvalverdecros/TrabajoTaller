@@ -10,20 +10,19 @@ class ModeloTaller(){
     private val tableName = "Taller"
 
     fun getAllTalleres(): List<Taller> {
-
         return manager.createQuery("FROM $tableName").resultList as List<Taller>
-
     }
 
-    fun insertTaller(taller: Taller){
+    fun insertTaller(taller: Taller) : Boolean{
 
         try {
             manager.transaction.begin()
             manager.persist(taller)
             manager.transaction.commit()
+            return true
         } catch (e: Exception) {
             manager.transaction.rollback()
-            println("Se ha producido un error, rollback aplicado")
+            return false
 
         }
     }
