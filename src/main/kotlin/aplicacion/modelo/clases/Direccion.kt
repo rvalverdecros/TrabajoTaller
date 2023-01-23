@@ -18,7 +18,7 @@ class Direccion(
     var numero: Int,
 
     @Column(name  = "cp")
-    var cp: String,
+    var cp: Int,
 
     @Column(name = "ciudad")
     var ciudad : String,
@@ -31,7 +31,7 @@ class Direccion(
 
 ){
     override fun toString(): String {
-        return "$calle $numero $cp"
+        return "$calle $numero $cp $ciudad"
     }
 
 }
