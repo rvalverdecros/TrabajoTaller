@@ -1,6 +1,7 @@
 package aplicacion.vista
 
 import Clases.Cliente
+import Clases.Pedido
 import Clases.Taller
 
 class AppVista {
@@ -37,6 +38,29 @@ class AppVista {
 
     fun insercionTallerFallida() {
         println("Insercion del taller fallida")
+        roolback()
+    }
+
+    fun imprimirPedido(pedido: Pedido) {
+
+        if (pedido.taller != null) {
+            println("********************")
+            println("Cliente : " + pedido.cliente.nombre)
+            println("Taller : " + pedido.taller!!.nombre)
+            println("Descripción del pedido : " + pedido.descripcion)
+        }else{
+            println("********************")
+            println("Cliente : " + pedido.cliente.nombre)
+            println("Descripción del pedido : " + pedido.descripcion)
+        }
+    }
+
+    fun insercionPedidoCorrecta() {
+        println("Pedido insertado correctamente")
+    }
+
+    fun insercionPedidoFallida() {
+        println("Insercion del pedido fallida")
         roolback()
     }
 }
