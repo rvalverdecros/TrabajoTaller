@@ -16,55 +16,89 @@ class AppControlador {
 
     private val vista = AppVista()
 
-    fun allClientes(){
+    fun allClientes() {
         val lisClientes = gestorClientes.getAllClientes()
 
-        for(cliente in lisClientes){
+        for (cliente in lisClientes) {
             vista.imprimirCliente(cliente)
         }
     }
 
-    fun insertCliente(cliente: Cliente){
+    fun insertCliente(cliente: Cliente) {
         val insert = gestorClientes.insertCliente(cliente)
-        if (insert){
+        if (insert) {
             vista.insercionCLienteCorrecta()
-        }else{
+        } else {
             vista.insercionClienteFallida()
         }
     }
 
-    fun allTalleres(){
+    fun allTalleres() {
         val lisTalleres = gestorTalleres.getAllTalleres()
 
-        for (taller in lisTalleres){
+        for (taller in lisTalleres) {
             vista.imprimirTaller(taller)
         }
     }
 
-    fun insertTaller(taller: Taller){
+    fun insertTaller(taller: Taller) {
         val insert = gestorTalleres.insertTaller(taller)
-        if (insert){
+        if (insert) {
             vista.insercionTallerCorrecta()
-        }else{
+        } else {
             vista.insercionTallerFallida()
         }
     }
 
-    fun allPedidos(){
+    fun allPedidos() {
         val lisPedidos = gestorPedidos.getAllPedidos()
 
-        for (pedido in lisPedidos){
+        for (pedido in lisPedidos) {
             vista.imprimirPedido(pedido)
         }
     }
 
-    fun insertPedido(pedido: Pedido){
+    fun insertPedido(pedido: Pedido) {
         val insert = gestorPedidos.insertPedido(pedido)
-        if (insert){
+        if (insert) {
             vista.insercionPedidoCorrecta()
-        }else{
+        } else {
             vista.insercionPedidoFallida()
         }
+    }
+
+    fun modifyPedidoTaller() {
+
+        println("Introduzca la clave del pedido")
+
+        val idPedido = readln().toIntOrNull()
+
+        if (idPedido != null) {
+
+            println("Introduzca el CIF del taller")
+            val idTaller = readln()
+
+            val pedido = gestorPedidos.getAllPedidos().find { it.id == idPedido }
+            val taller = gestorTalleres.getAllTalleres().find { it.cif == idTaller }
+
+            if (pedido == null) {
+                vista.pedidoNoExistente()
+            } else if (taller == null) {
+                vista.tallerNoExistente()
+            } else {
+                val update = gestorPedidos.modPedido(pedido, taller)
+
+                if (update) {
+                    vista.modificacionPedidoCorrecta()
+                } else {
+                    vista.modificacionPedidoIncorrecta()
+                }
+            }
+
+        } else {
+            vista.datoErroneo()
+        }
+
     }
 
 }

@@ -6,9 +6,14 @@ import Clases.Taller
 
 class AppVista {
 
-    fun roolback(){
+    fun roolback() {
         println("Se ha realizado un roolback")
     }
+
+    fun datoErroneo() {
+        println("ERROR : Dato no válido")
+    }
+
     fun imprimirCliente(cliente: Cliente) {
         println("********************")
         println("Nombre : ${cliente.nombre}")
@@ -48,7 +53,7 @@ class AppVista {
             println("Cliente : " + pedido.cliente.nombre)
             println("Taller : " + pedido.taller!!.nombre)
             println("Descripción del pedido : " + pedido.descripcion)
-        }else{
+        } else {
             println("********************")
             println("Cliente : " + pedido.cliente.nombre)
             println("Descripción del pedido : " + pedido.descripcion)
@@ -61,6 +66,23 @@ class AppVista {
 
     fun insercionPedidoFallida() {
         println("Insercion del pedido fallida")
+        roolback()
+    }
+
+    fun pedidoNoExistente() {
+        println("No existe un pedido con la id introducida")
+    }
+
+    fun tallerNoExistente() {
+        println("No existe un taller con el CIF introducido")
+    }
+
+    fun modificacionPedidoCorrecta() {
+        println("Pedido modificado correctamente")
+    }
+
+    fun modificacionPedidoIncorrecta() {
+        println("Modificación del pedido fallida")
         roolback()
     }
 }

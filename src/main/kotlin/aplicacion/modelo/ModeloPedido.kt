@@ -1,6 +1,7 @@
 package aplicacion.modelo
 
 import Clases.Pedido
+import Clases.Taller
 import aplicacion.modelo.Modelo
 import jakarta.persistence.EntityManager
 
@@ -16,6 +17,21 @@ class ModeloPedido() {
     }
 
     fun insertPedido(pedido: Pedido) : Boolean{
+
+        try {
+            manager.transaction.begin()
+            manager.persist(pedido)
+            manager.transaction.commit()
+            return true
+        } catch (e: Exception) {
+            manager.transaction.rollback()
+            return false
+        }
+    }
+
+    fun modPedido(pedido: Pedido,taller: Taller) : Boolean{
+
+        pedido.taller = taller
 
         try {
             manager.transaction.begin()
