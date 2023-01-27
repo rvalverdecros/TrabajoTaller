@@ -22,5 +22,7 @@ class Cliente(
         joinColumns = [JoinColumn(name = "dni_cliente")],
         inverseJoinColumns = [JoinColumn(name = "cif_taller")]
     )
-    var talleres: MutableSet<Taller>? =null
+    var talleres: MutableSet<Taller>? =null,
+
+    @Column(name = "Contraseña") var contrasenia : String
 )

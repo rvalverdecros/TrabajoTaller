@@ -16,6 +16,8 @@ class Taller (
     var pedidos: MutableSet<Pedido>? = null,
 
     @ManyToMany(mappedBy = "talleres", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    var clientes : MutableSet<Cliente>? = null
+    var clientes : MutableSet<Cliente>? = null,
+
+    @Column(name = "Contraseña") var contrasenia : String
 
 )

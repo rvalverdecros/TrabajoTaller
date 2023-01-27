@@ -7,6 +7,7 @@ import Modelo.ModeloCliente
 import Modelo.ModeloTaller
 import aplicacion.modelo.ModeloPedido
 import aplicacion.vista.AppVista
+import java.nio.charset.Charset
 
 class AppControlador {
 
@@ -16,32 +17,59 @@ class AppControlador {
 
     private val vista = AppVista()
 
-    fun allClientes() {
-        val lisClientes = gestorClientes.getAllClientes()
 
-        for (cliente in lisClientes) {
-            vista.imprimirCliente(cliente)
+    private var clienteLoged : Cliente? = null
+    private var tallerLoged : Taller? = null
+
+
+    fun isClienteLoged(dni : String, contrasenia : String) : Cliente?{
+
+        val cliente = gestorClientes.getAllClientes().find{ it.dni == dni && it.contrasenia == descifrar(contrasenia) }
+
+        clienteLoged = cliente
+
+        return cliente
+    }
+
+    fun isTallerLoged(cif : String, contrasenia : String) : Taller?{
+
+        val taller = gestorTalleres.getAllTalleres().find{ it.cif == cif && it.contrasenia == descifrar(contrasenia) }
+
+        tallerLoged = taller
+
+        return taller
+    }
+
+    private fun cifrar(pass:String) :String{
+        val con = pass.toByteArray()
+        for(i in 0..con.size-1){
+            con[i]= (con[i]+3).toByte()
         }
+        val new = con.toString(Charset.defaultCharset())
+        return new
+    }
+    private fun descifrar(pass:String) :String{
+        val con = pass.toByteArray()
+        for(i in 0..con.size-1){
+            con[i]= (con[i]-3).toByte()
+        }
+        val new = con.toString(Charset.defaultCharset())
+        return new
     }
 
     fun insertCliente(cliente: Cliente) {
+        cliente.contrasenia = cifrar(cliente.contrasenia)
         val insert = gestorClientes.insertCliente(cliente)
         if (insert) {
-            vista.insercionCLienteCorrecta()
+            vista.insercionClienteCorrecta()
         } else {
             vista.insercionClienteFallida()
         }
     }
 
-    fun allTalleres() {
-        val lisTalleres = gestorTalleres.getAllTalleres()
-
-        for (taller in lisTalleres) {
-            vista.imprimirTaller(taller)
-        }
-    }
 
     fun insertTaller(taller: Taller) {
+        taller.contrasenia = cifrar(taller.contrasenia)
         val insert = gestorTalleres.insertTaller(taller)
         if (insert) {
             vista.insercionTallerCorrecta()
@@ -50,15 +78,11 @@ class AppControlador {
         }
     }
 
-    fun allPedidos() {
-        val lisPedidos = gestorPedidos.getAllPedidos()
 
-        for (pedido in lisPedidos) {
-            vista.imprimirPedido(pedido)
-        }
-    }
+    fun insertPedido(descripcion : String) {
 
-    fun insertPedido(pedido: Pedido) {
+        val pedido = Pedido(cliente = clienteLoged!!, descripcion = descripcion)
+
         val insert = gestorPedidos.insertPedido(pedido)
         if (insert) {
             vista.insercionPedidoCorrecta()
@@ -67,8 +91,48 @@ class AppControlador {
         }
     }
 
-    fun modifyPedidoTaller() {
+    fun mostrarPedidosNoAsignados(){
+        val pedidosSinAsignar = gestorPedidos.getAllPedidos().filter { it.taller == null }
 
+        for (pedido in pedidosSinAsignar) {
+            vista.imprimirPedido(pedido)
+        }
+    }
+
+    fun asignarPedidoNoAsignado() {
+
+        val pedidosSinAsignar = gestorPedidos.getAllPedidos().filter { it.taller == null }
+
+        for (pedido in pedidosSinAsignar) {
+            vista.imprimirPedido(pedido)
+        }
+
+        println("Introduzca la clave del pedido")
+
+        val idPedido = readln().toIntOrNull()
+
+        if (idPedido != null) {
+
+            val pedido = pedidosSinAsignar.find { it.id == idPedido }
+
+            if (pedido == null) {
+                vista.pedidoNoExistente()
+            } else {
+                val update = gestorPedidos.modPedido(pedido, tallerLoged!!)
+
+                if (update) {
+                    vista.modificacionPedidoCorrecta()
+                } else {
+                    vista.modificacionPedidoIncorrecta()
+                }
+            }
+
+        } else {
+            vista.datoErroneo()
+        }
+
+
+        /*
         println("Introduzca la clave del pedido")
 
         val idPedido = readln().toIntOrNull()
@@ -99,6 +163,43 @@ class AppControlador {
             vista.datoErroneo()
         }
 
+         */
+
     }
 
+    fun allPedidosTaller() {
+        val lisPedidos = gestorPedidos.getAllPedidos().filter { it.taller == tallerLoged}
+
+        for (pedido in lisPedidos) {
+            vista.imprimirPedido(pedido)
+        }
+    }
+
+    fun allPedidosCliente() {
+        val lisPedidos = gestorPedidos.getAllPedidos().filter { it.cliente == clienteLoged}
+
+        for (pedido in lisPedidos) {
+            vista.imprimirPedido(pedido)
+        }
+    }
+
+    fun allClientesTaller(){
+        val lisClientes = tallerLoged!!.clientes
+
+        if (lisClientes != null) {
+            for (cliente in lisClientes){
+                vista.imprimirCliente(cliente)
+            }
+        }
+    }
+
+    fun allTallerCliente(){
+        val lisTalleres = clienteLoged!!.talleres
+
+        if (lisTalleres != null) {
+            for (taller in lisTalleres){
+                vista.imprimirTaller(taller)
+            }
+        }
+    }
 }

@@ -21,7 +21,7 @@ class AppVista {
         println("Dirección : ${cliente.direccion}")
     }
 
-    fun insercionCLienteCorrecta() {
+    fun insercionClienteCorrecta() {
         println("Cliente insertado correctamente")
     }
 
@@ -50,11 +50,13 @@ class AppVista {
 
         if (pedido.taller != null) {
             println("********************")
+            println("Clave de pedido :" + pedido.id)
             println("Cliente : " + pedido.cliente.nombre)
             println("Taller : " + pedido.taller!!.nombre)
             println("Descripción del pedido : " + pedido.descripcion)
         } else {
             println("********************")
+            println("Clave de pedido :" + pedido.id)
             println("Cliente : " + pedido.cliente.nombre)
             println("Descripción del pedido : " + pedido.descripcion)
         }
