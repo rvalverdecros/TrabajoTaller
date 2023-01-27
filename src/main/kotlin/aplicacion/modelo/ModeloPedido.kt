@@ -1,5 +1,6 @@
 package aplicacion.modelo
 
+import Clases.Cliente
 import Clases.Pedido
 import Clases.Taller
 import aplicacion.modelo.Modelo
@@ -33,9 +34,20 @@ class ModeloPedido() {
 
         pedido.taller = taller
 
+        if (taller.clientes == null){
+            taller.clientes = mutableSetOf()
+        }
+
+        taller.clientes!!.add(pedido.cliente)
+        val cliente: Cliente? = manager.find(Cliente::class.java, pedido.cliente.dni)
+        if (cliente != null) {
+            cliente.talleres?.add(taller)
+        }
         try {
             manager.transaction.begin()
+            manager.merge(cliente)
             manager.persist(pedido)
+            manager.merge(taller)
             manager.transaction.commit()
             return true
         } catch (e: Exception) {

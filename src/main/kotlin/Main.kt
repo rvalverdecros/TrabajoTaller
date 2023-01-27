@@ -40,7 +40,7 @@ fun main() {
 fun loginCliente(controlador: AppControlador) {
     println("Introduzca el dni del cliente")
     val dni = readln()
-    println("Introduzca la contraseña del taller")
+    println("Introduzca la contraseña del cliente")
     val contrasenia = readln()
 
     val cliente = controlador.isClienteLoged(dni, contrasenia)
@@ -189,6 +189,7 @@ fun crearDireccion(): Direccion {
 }
 
 fun opcionesTaller(){
+    println("********************")
     println("Elija una opción")
     println("1. Consultar pedidos no asignados")
     println("2. Asignar pedido no asignado")
@@ -212,18 +213,22 @@ fun menuTaller(controlador: AppControlador) {
 
         1 -> {
             controlador.mostrarPedidosNoAsignados()
+            menuTaller(controlador)
         }
 
         2 -> {
             controlador.asignarPedidoNoAsignado()
+            menuTaller(controlador)
         }
 
         3 -> {
             controlador.allPedidosTaller()
+            menuTaller(controlador)
         }
 
         4 -> {
             controlador.allClientesTaller()
+            menuTaller(controlador)
         }
 
         5 -> {
@@ -235,6 +240,7 @@ fun menuTaller(controlador: AppControlador) {
 }
 
 fun opcionesCliente(){
+    println("********************")
     println("Elija una opción")
     println("1. Dar de alta un pedido")
     println("2. Consultar pedidos realizados")
@@ -259,14 +265,17 @@ fun menuCliente(controlador: AppControlador) {
             println("Introduzca la descripcion del pedido")
             val descripcion = readln()
             controlador.insertPedido(descripcion)
+            menuCliente(controlador)
         }
 
         2 -> {
             controlador.allPedidosCliente()
+            menuCliente(controlador)
         }
 
         3 -> {
             controlador.allTallerCliente()
+            menuCliente(controlador)
         }
 
         4 -> {

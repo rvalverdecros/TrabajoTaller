@@ -10,7 +10,7 @@ class ModeloTaller(){
     private val tableName = "Taller"
 
     fun getAllTalleres(): List<Taller> {
-        return manager.createQuery("FROM $tableName").resultList as List<Taller>
+        return manager.createQuery("FROM Taller").resultList as List<Taller>
     }
 
     fun insertTaller(taller: Taller) : Boolean{

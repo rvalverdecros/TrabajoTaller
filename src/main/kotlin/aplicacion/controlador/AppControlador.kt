@@ -24,7 +24,7 @@ class AppControlador {
 
     fun isClienteLoged(dni : String, contrasenia : String) : Cliente?{
 
-        val cliente = gestorClientes.getAllClientes().find{ it.dni == dni && it.contrasenia == descifrar(contrasenia) }
+        val cliente = gestorClientes.getAllClientes().find{ it.dni == dni && descifrar(it.contrasenia) == contrasenia }
 
         clienteLoged = cliente
 
@@ -33,7 +33,9 @@ class AppControlador {
 
     fun isTallerLoged(cif : String, contrasenia : String) : Taller?{
 
-        val taller = gestorTalleres.getAllTalleres().find{ it.cif == cif && it.contrasenia == descifrar(contrasenia) }
+        val lisTalleres = gestorTalleres.getAllTalleres()
+
+         val taller = lisTalleres.find{ it.cif == cif && descifrar(it.contrasenia) == contrasenia }
 
         tallerLoged = taller
 
